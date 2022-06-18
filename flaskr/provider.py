@@ -58,6 +58,10 @@ class AbstractTestDriveProvider(ABC):
     def check_car(self, car_id: int, date: int, client_id: int) -> bool:
         pass
 
+    @abstractmethod
+    def get_test_drives_by_client(self, client_id: int) -> list[dto.TestDrive]:
+        pass
+
 
 class SqliteDataProvider(AbstractClientProvider, AbstractCarProvider, AbstractTestDriveProvider):
     _provider = None
@@ -134,3 +138,12 @@ and t.testdrivedate = {date})
 ({car_id}, {date}, {client_id});'''
 
         self._db.execute_update(sql)
+
+    def get_test_drives_by_client(self, client_id: int) -> list[dto.TestDrive]:
+        sql = f'''SELECT a.produceyear || ' ' || f.name || ' ' || a.model, t.testdrivedate 
+from testdrives t 
+join auto a ON a.id = t.autoid 
+join firm f ON f.id = a.firmid 
+where t.clientid = {client_id}'''
+
+        return [converter.DbResponseToTestDriveConverter().convert(data=item) for item in self._db.execute_select(sql)]

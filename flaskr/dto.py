@@ -88,3 +88,23 @@ class Car:
             'engine_volume': self._engine_volume,
             'battery_capacity': self._battery
         }
+
+
+class TestDrive:
+    def __init__(self, car='', time=0):
+        self._car = car
+        self._date = time
+
+    @property
+    def car(self) -> str:
+        return self._car
+
+    @property
+    def time(self) -> int:
+        return self._date
+
+    def to_dict(self) -> dict:
+        return {
+            'car': self._car,
+            'date': self._date
+        }

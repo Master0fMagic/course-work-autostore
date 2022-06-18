@@ -134,4 +134,25 @@ def create_test_drive():
 
     return jsonify(success=True)
 
+
+@app.route('/api/test-drive/history')
+@login_required
+def get_test_drives():
+    """
+    :return: JSON: {
+    "history: [
+        {
+        'car': "",
+        'date': <int: unix time in seconds truncated to date>
+        }
+    ]
+    }
+    """
+
+    tds = TestDriveService()
+    return {
+        "history": [item.to_dict() for item in tds.get_test_drives_by_client(current_user.id)]
+    }
+
+
 app.run()
