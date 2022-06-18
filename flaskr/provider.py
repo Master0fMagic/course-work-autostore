@@ -49,7 +49,17 @@ class AbstractCarProvider(ABC):
         pass
 
 
-class SqliteDataProvider(AbstractClientProvider, AbstractCarProvider):
+class AbstractTestDriveProvider(ABC):
+    @abstractmethod
+    def create_test_drive(self, car_id: int, date: int, client_id: int):
+        pass
+
+    @abstractmethod
+    def check_car(self, car_id: int, date: int, client_id: int) -> bool:
+        pass
+
+
+class SqliteDataProvider(AbstractClientProvider, AbstractCarProvider, AbstractTestDriveProvider):
     _provider = None
 
     def __init__(self):
@@ -82,7 +92,7 @@ WHERE c.login = '{login}';
 
     def get_client(self, login: str) -> dto.Client:
         sql = f'''
-        SELECT *
+        SELECT c.id , c.login , c.password 
 from client c 
 where c.login = '{login}' or c.id = '{login}';
 '''
@@ -97,7 +107,7 @@ where c.login = '{login}' or c.id = '{login}';
         return self.get_client(login)
 
     def get_all_cars(self):
-        sql = f'''SELECT a.id, a.produceyear, e.name, e2.name, g.name, a.enginevolume, c.name, f.name, a.model, a.horsepower, a.baterycapacity 
+        sql = '''SELECT a.id, a.produceyear, e.name, e2.name, g.name, a.enginevolume, c.name, f.name, a.model, a.horsepower, a.baterycapacity 
 FROM auto a 
 join equipment e on e.id  = a.equipmentid 
 join enginetype e2 on e2.id = a.enginetypeid 
@@ -108,3 +118,19 @@ join firm f on f.id = a.firmid
 
         res = self._db.execute_select(sql)
         return [converter.DbResponseToCarConverter().convert(data=row) for row in res]
+
+    def check_car(self, car_id: int, date: int, client_id: int) -> bool:
+        sql = f'''SELECT EXISTS (
+select id  
+from testdrives t 
+where (t.autoid = {car_id} or t.clientid = {client_id})
+and t.testdrivedate = {date})
+        '''
+        res = self._db.execute_select(sql)
+        return bool(int(res[0][0]))
+
+    def create_test_drive(self, car_id: int, date: int, client_id: int):
+        sql = f'''INSERT INTO testdrives(autoid, testdrivedate, clientid) VALUES
+({car_id}, {date}, {client_id});'''
+
+        self._db.execute_update(sql)

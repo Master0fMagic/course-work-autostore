@@ -4,6 +4,7 @@ from flask_cors import CORS
 from setup import init_app
 from clientService import ClientService
 from carService import CarService
+from testDriveService import TestDriveService
 from flask_login import login_user, logout_user, login_required, current_user
 import error
 import dto
@@ -84,7 +85,7 @@ def sing_up():
 
 
 @app.route('/api/cars')
-def ge_cars():
+def get_cars():
     """
     :return JSON: {
         cars: [
@@ -108,4 +109,29 @@ def ge_cars():
         'cars': [car.to_dict() for car in cs.get_cars()]
     }
 
-# app.run()
+
+@app.route('/api/test-drive/create', methods=["POST"])
+@login_required
+def create_test_drive():
+    """
+    takes json: {
+    "car_id": <int: auto`s id to test drive>,
+    "date": <int: test drive date in format od unix time (seconds)>
+    }
+    :return: 200 or 40X error
+    """
+    auto_id = request.json.get('car_id')
+    date = request.json.get('date')
+
+    if not (auto_id and date):
+        abort(400, 'Not correct value')
+
+    tds = TestDriveService()
+    try:
+        tds.create_test_drive(auto_id, date, current_user.id)
+    except error.CarIsBookedOrUserIsBusyException as e:
+        abort(400, e.description)
+
+    return jsonify(success=True)
+
+app.run()

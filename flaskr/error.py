@@ -8,3 +8,7 @@ class WrongPasswordException(BaseException):
 
 class UserAlreadyExist(BaseException):
     description = 'user with such login already exist'
+
+
+class CarIsBookedOrUserIsBusyException(BaseException):
+    description = 'car is already booked for test drive or user has planned test drive for chosen date'
