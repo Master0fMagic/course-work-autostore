@@ -70,6 +70,10 @@ class AbstractTestDriveProvider(ABC):
     def get_test_drives_by_client(self, client_id: int) -> list[dto.TestDrive]:
         pass
 
+    @abstractmethod
+    def complete(self, test_drive_id: int):
+        pass
+
 
 class AbstractDealerCenterProvider(ABC):
     @abstractmethod
@@ -201,3 +205,8 @@ from dillercenter'''
 
         return [converter.DbResponseToDealerCenterConverter().convert(data=item) for item in
                 self._db.execute_select(sql)]
+
+    def complete(self, test_drive_id: int):
+        sql = f'update testdrives set status = True where id = {test_drive_id}'
+
+        self._db.execute_update(sql)

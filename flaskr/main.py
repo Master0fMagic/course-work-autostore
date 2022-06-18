@@ -289,4 +289,18 @@ def get_car_by_test_drive(test_drive_id: int):
     return cs.get_car_by_test_drive(test_drive_id).to_dict()
 
 
+@app.route('api/test-drives/complete/<int:id>')
+@login_required
+def complete_test_drive(id: int):
+    """
+    :return: 200
+    """
+
+    if id <= 0:
+        abort(400, 'Invalid id')
+
+    tds = TestDriveService()
+    tds.complete(id)
+
+
 app.run()

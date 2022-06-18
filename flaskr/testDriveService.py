@@ -16,8 +16,15 @@ class AbstractTestDriveService(ABC):
     def get_test_drives_by_client(self, client_id: int) -> list[dto.TestDrive]:
         pass
 
+    @abstractmethod
+    def complete(self, test_drive_id: int):
+        pass
+
 
 class TestDriveService(AbstractTestDriveService):
+    def complete(self, test_drive_id: int):
+        self._provider.complete(test_drive_id)
+
     def __init__(self):
         self._provider = provider.SqliteDataProvider.get_provider()
 
