@@ -218,3 +218,11 @@ where t.clientid = {client_id}'''
         sql = f'update testdrives set status = True where id = {test_drive_id}'
 
         self._db.execute_update(sql)
+
+    def get_booked_cars(self, car_id: int, dealer_center_id: int) -> list[int]:
+        sql = f'''SELECT t.testdrivedate 
+from testdrives t 
+where cast(STRFTIME('%s', 'now') AS UNSIGNED BIG INT) < t.testdrivedate 
+and t.autoid = {car_id} and t.dillercenterid = {dealer_center_id}
+'''
+        return [int(item[0]) for item in self._db.execute_select(sql)]

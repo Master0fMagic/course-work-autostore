@@ -324,4 +324,27 @@ def get_dealer_center_by_car(car_id: int):
     }
 
 
+@app.route('/api/cars/dealer-center/booked')
+@login_required
+def get_booked_cars_for_center():
+    """
+    takes car_id and dealer_center_id as query params
+    Example: /api/cars/dealer-center/booked?car_id=1&dealer_center_id=1
+    :return: {
+    "data": [<list of time in unix timestamp (in seconds) truncated to day where car is booked for test drive>]
+    }
+    """
+
+    car_id = int(request.args.get('car_id'))
+    dealer_center_id = int(request.args.get('dealer_center_id'))
+
+    if not (car_id and dealer_center_id):
+        abort(400, "Id is required")
+
+    ds = DealerService()
+    return {
+        'data': ds.get_booked_dates(car_id, dealer_center_id)
+    }
+
+
 app.run()
