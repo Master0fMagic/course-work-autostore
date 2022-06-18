@@ -40,7 +40,7 @@ class ClientService(AbstractClientService):
 
     def register_new_user(self, login: str, password: str) -> Client:
         if self._provider.is_login_exist(login):
-            raise ValueError('Iser ')
+            raise ValueError('User already exist')
         if not (login and password):
             raise ValueError('Expected all fields not to be empty')
         return self._provider.register_new_user(login, password)

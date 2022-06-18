@@ -43,14 +43,20 @@ class AbstractClientProvider(ABC):
         pass
 
 
-class SqliteDataProvider(AbstractClientProvider):
+class AbstractCarProvider(ABC):
+    @abstractmethod
+    def get_all_cars(self):
+        pass
+
+
+class SqliteDataProvider(AbstractClientProvider, AbstractCarProvider):
     _provider = None
 
     def __init__(self):
         self._db = SqliteDatabaseProvider()
 
     @classmethod
-    def get_provider(cls) -> AbstractClientProvider:
+    def get_provider(cls):
         if not cls._provider:
             cls._provider = SqliteDataProvider()
         return cls._provider
@@ -89,3 +95,16 @@ where c.login = '{login}' or c.id = '{login}';
         '''
         self._db.execute_update(sql)
         return self.get_client(login)
+
+    def get_all_cars(self):
+        sql = f'''SELECT a.id, a.produceyear, e.name, e2.name, g.name, a.enginevolume, c.name, f.name, a.model, a.horsepower, a.baterycapacity 
+FROM auto a 
+join equipment e on e.id  = a.equipmentid 
+join enginetype e2 on e2.id = a.enginetypeid 
+join gearbox g on g.id = a.gearboxtypeid
+join cartype c on c.id  = a.cartypeid 
+join firm f on f.id = a.firmid 
+        '''
+
+        res = self._db.execute_select(sql)
+        return [converter.DbResponseToCarConverter().convert(data=row) for row in res]

@@ -3,6 +3,7 @@ from flask_cors import CORS
 
 from setup import init_app
 from clientService import ClientService
+from carService import CarService
 from flask_login import login_user, logout_user, login_required, current_user
 import error
 import dto
@@ -65,26 +66,46 @@ def sing_up():
        create new user and login him
        :return: success or error
        """
-    email = request.json.get('email')
+
+    user_login = request.json.get('login')
     password = request.json.get('password')
     repeated_password = request.json.get('repeated_password')
-    first_name = request.json.get('first_name')
-    last_name = request.json.get('last_name')
-    phone = request.json.get('phone')
 
-    print(email)
-
-    if not (password and repeated_password and first_name and last_name and phone):
+    if not (password and repeated_password and user_login):
         abort(400, 'missing required fields')
 
     if password != repeated_password:
         abort(400, 'passwords does not match')
 
     cs = ClientService()
-    client = cs.register_new_user(first_name, last_name, phone, password, email)
+    client = cs.register_new_user(user_login, password)
     login_user(client)
     return jsonify(success=True)
 
 
+@app.route('/api/cars')
+def ge_cars():
+    """
+    :return JSON: {
+        cars: [
+         {
+            'id': 1,
+            'produce_year': 2000,
+            'equipment': "",
+            'engine': "",
+            'car_type': "",
+            'firm': "",
+            'model': "",
+            'horse_powers': 1,
+            'battery_capacity': 0.0 // or null if not set
+            'engine_volume': 0.0 //or null if not set
+        }
+        ]
+    }
+    """
+    cs = CarService()
+    return {
+        'cars': [car.to_dict() for car in cs.get_cars()]
+    }
 
 # app.run()
