@@ -108,3 +108,37 @@ class TestDrive:
             'car': self._car,
             'date': self._date
         }
+
+
+class FilterItem:
+    def __init__(self, id=-1, name=''):
+        self._id = id
+        self._name = name
+
+    @property
+    def id(self) -> int:
+        return self._id
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self._id,
+            "name": self._name
+        }
+
+
+class Filter:
+    def __init__(self):
+        self._items = dict()
+
+    @property
+    def items(self) -> dict:
+        return self._items
+
+    def add_item(self, filter_name: str, items: list[FilterItem]) -> None:
+        self._items[filter_name] = [item.to_dict() for item in items]
+
+

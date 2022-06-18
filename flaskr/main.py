@@ -110,6 +110,96 @@ def get_cars():
     }
 
 
+@app.route('/api/cars/filter/firm')
+def get_firm_filter_values():
+    """
+    :return: JSON: {
+    'values':[
+        {
+            "id":1,
+            "name":""
+        }
+    ]
+    }
+    """
+    cs = CarService()
+    return {
+        'values': [item.to_dict() for item in cs.get_firm_filter()]
+    }
+
+
+@app.route('/api/cars/filter/gearbox')
+def get_gearbox_filter_values():
+    """
+    :return: JSON: {
+    'values':[
+        {
+            "id":1,
+            "name":""
+        }
+    ]
+    }
+    """
+    cs = CarService()
+    return {
+        'values': [item.to_dict() for item in cs.get_gearbox_filter()]
+    }
+
+
+@app.route('/api/cars/filter/equipment')
+def get_equipment_filter_values():
+    """
+    :return: JSON: {
+    'values':[
+        {
+            "id":1,
+            "name":""
+        }
+    ]
+    }
+    """
+    cs = CarService()
+    return {
+        'values': [item.to_dict() for item in cs.get_equipment_filter()]
+    }
+
+
+@app.route('/api/cars/filter/type')
+def get_type_filter_values():
+    """
+    :return: JSON: {
+    'values':[
+        {
+            "id":1,
+            "name":""
+        }
+    ]
+    }
+    """
+    cs = CarService()
+    return {
+        'values': [item.to_dict() for item in cs.get_car_type_filter()]
+    }
+
+
+@app.route('/api/cars/filter/engine')
+def get_engine_filter_values():
+    """
+    :return: JSON: {
+    'values':[
+        {
+            "id":1,
+            "name":""
+        }
+    ]
+    }
+    """
+    cs = CarService()
+    return {
+        'values': [item.to_dict() for item in cs.get_engine_type_filter()]
+    }
+
+
 @app.route('/api/test-drive/create', methods=["POST"])
 @login_required
 def create_test_drive():

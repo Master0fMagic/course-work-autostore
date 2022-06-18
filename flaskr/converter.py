@@ -46,3 +46,18 @@ class DbResponseToTestDriveConverter(AbstractConverter):
             raise KeyError('"data" is not present in kwargs')
 
         return dto.TestDrive(*kwargs['data'])
+
+
+class DbResponseToFilterConverter(AbstractConverter):
+    def convert(self, **kwargs):
+        """
+        kwargs:
+            data: list|set|tuple with db result
+        """
+
+        if 'data' not in kwargs:
+            raise KeyError('"data" is not present in kwargs')
+
+        return dto.FilterItem(*kwargs['data'])
+
+

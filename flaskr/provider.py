@@ -45,7 +45,11 @@ class AbstractClientProvider(ABC):
 
 class AbstractCarProvider(ABC):
     @abstractmethod
-    def get_all_cars(self):
+    def get_all_cars(self) -> list[dto.Car]:
+        pass
+
+    @abstractmethod
+    def get_filter_values(self, filter_name: str) -> list[dto.FilterItem]:
         pass
 
 
@@ -110,7 +114,7 @@ where c.login = '{login}' or c.id = '{login}';
         self._db.execute_update(sql)
         return self.get_client(login)
 
-    def get_all_cars(self):
+    def get_all_cars(self) -> list[dto.Car]:
         sql = '''SELECT a.id, a.produceyear, e.name, e2.name, g.name, a.enginevolume, c.name, f.name, a.model, a.horsepower, a.baterycapacity 
 FROM auto a 
 join equipment e on e.id  = a.equipmentid 
@@ -147,3 +151,8 @@ join firm f ON f.id = a.firmid
 where t.clientid = {client_id}'''
 
         return [converter.DbResponseToTestDriveConverter().convert(data=item) for item in self._db.execute_select(sql)]
+
+    def get_filter_values(self, filter_name: str) -> list[dto.FilterItem]:
+        sql = f'''SELECT * from {filter_name}'''
+
+        return [converter.DbResponseToFilterConverter().convert(data=item) for item in self._db.execute_select(sql)]
