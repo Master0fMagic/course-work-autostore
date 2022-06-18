@@ -181,7 +181,7 @@ from testdrives t
 where ( (t.autoid = {car_id} and t.dillercenterid = {dealer_center_id} ) or t.clientid = {client_id})
 and t.testdrivedate = {date})
 and EXISTS(
-SELECT id from dillercentercar d where d.dillercenterid = :did and d.carid = :carid
+SELECT id from dillercentercar d where d.dillercenterid = {dealer_center_id} and d.carid = {car_id}
 )
         '''
         res = self._db.execute_select(sql)
@@ -194,11 +194,12 @@ SELECT id from dillercentercar d where d.dillercenterid = :did and d.carid = :ca
         self._db.execute_update(sql)
 
     def get_test_drives_by_client(self, client_id: int) -> list[dto.TestDrive]:
-        sql = f'''SELECT a.produceyear || ' ' || f.name || ' ' || a.model, t.testdrivedate, d.name || ', ' || d.address,
+        sql = f'''SELECT t.id, a.produceyear || ' ' || f.name || ' ' || a.model, t.testdrivedate, d.name || ', ' || d.address,
 t.status
 from testdrives t 
 join auto a ON a.id = t.autoid 
 join firm f ON f.id = a.firmid 
+join dillercenter d on d.id = t.dillercenterid
 where t.clientid = {client_id}'''
 
         return [converter.DbResponseToTestDriveConverter().convert(data=item) for item in self._db.execute_select(sql)]

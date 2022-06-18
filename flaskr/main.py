@@ -234,8 +234,11 @@ def get_test_drives():
     :return: JSON: {
     "history: [
         {
-        'car': "",
-        'date': <int: unix time in seconds truncated to date>
+        "car": "2020 Toyota Tundra TRD Pro",
+        "date": 1655413200,
+        "dealer_center": "Toyota Center, м.Харків, вул.Сумська, 90",
+        "id": 1,
+        "status": 0
         }
     ]
     }
@@ -301,6 +304,7 @@ def complete_test_drive(id: int):
 
     tds = TestDriveService()
     tds.complete(id)
+    return jsonify(success=True)
 
 
 @app.route('/api/cars/dealer-center/<int:car_id>')
