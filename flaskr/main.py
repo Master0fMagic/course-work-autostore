@@ -289,7 +289,7 @@ def get_car_by_test_drive(test_drive_id: int):
     return cs.get_car_by_test_drive(test_drive_id).to_dict()
 
 
-@app.route('api/test-drives/complete/<int:id>')
+@app.route('/api/test-drives/complete/<int:id>', methods=['POST'])
 @login_required
 def complete_test_drive(id: int):
     """
@@ -301,6 +301,27 @@ def complete_test_drive(id: int):
 
     tds = TestDriveService()
     tds.complete(id)
+
+
+@app.route('/api/cars/dealer-center/<int:car_id>')
+@login_required
+def get_dealer_center_by_car(car_id: int):
+    """
+    :return: dealer centers where car is persist
+    JSON: {
+    "data":[
+        {
+            "address": "м.Київ, вул.Хрещатик, 17",
+            "id": 2,
+            "name": "Elite cars showroom"
+        }
+    ]
+    }
+    """
+    ds = DealerService()
+    return {
+        'data': [item.to_dict() for item in ds.get_dealer_center_by_car(car_id)]
+    }
 
 
 app.run()

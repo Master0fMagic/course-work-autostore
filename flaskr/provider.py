@@ -117,6 +117,15 @@ where t.id = {test_drive_id};
 
         return converter.DbResponseToCarConverter().convert(data=self._db.execute_select(sql)[0])
 
+    def get_dealer_centers_by_car(self, car_id: int):
+        sql = f'''SELECT d.*
+from dillercenter d 
+join dillercentercar d2 on d.id = d2.dillercenterid 
+where d2.carid = {car_id}'''
+
+        return [converter.DbResponseToDealerCenterConverter().convert(data=item) for item in
+                self._db.execute_select(sql)]
+
     def is_login_exist(self, login: str) -> bool:
         sql = f'''
         SELECT EXISTS (
@@ -200,8 +209,7 @@ where t.clientid = {client_id}'''
         return [converter.DbResponseToFilterConverter().convert(data=item) for item in self._db.execute_select(sql)]
 
     def get_centers(self):
-        sql = '''SELECT *
-from dillercenter'''
+        sql = 'SELECT * from dillercenter'
 
         return [converter.DbResponseToDealerCenterConverter().convert(data=item) for item in
                 self._db.execute_select(sql)]
