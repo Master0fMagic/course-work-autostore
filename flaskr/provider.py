@@ -52,6 +52,10 @@ class AbstractCarProvider(ABC):
     def get_filter_values(self, filter_name: str) -> list[dto.FilterItem]:
         pass
 
+    @abstractmethod
+    def get_car_by_test_drive(self, test_drive_id) -> dto.Car:
+        pass
+
 
 class AbstractTestDriveProvider(ABC):
     @abstractmethod
@@ -72,6 +76,14 @@ class AbstractDealerCenterProvider(ABC):
     def get_centers(self):
         pass
 
+    @abstractmethod
+    def get_dealer_centers_by_car(self, car_id: int):
+        pass
+
+    @abstractmethod
+    def get_booked_cars(self, car_id: int, dealer_center_id: int):
+        pass
+
 
 class SqliteDataProvider(AbstractClientProvider, AbstractCarProvider, AbstractTestDriveProvider,
                          AbstractDealerCenterProvider):
@@ -85,6 +97,21 @@ class SqliteDataProvider(AbstractClientProvider, AbstractCarProvider, AbstractTe
         if not cls._provider:
             cls._provider = SqliteDataProvider()
         return cls._provider
+
+    def get_car_by_test_drive(self, test_drive_id) -> dto.Car:
+        sql = f'''SELECT a.id, a.produceyear, e.name, e2.name, g.name, a.enginevolume, c.name, f.name, a.model, 
+        a.horsepower, a.baterycapacity 
+FROM auto a 
+join equipment e on e.id  = a.equipmentid 
+join enginetype e2 on e2.id = a.enginetypeid 
+join gearbox g on g.id = a.gearboxtypeid
+join cartype c on c.id  = a.cartypeid 
+join firm f on f.id = a.firmid 
+join testdrives t on t.autoid = a.id
+where t.id = {test_drive_id};
+        '''
+
+        return converter.DbResponseToCarConverter().convert(data=self._db.execute_select(sql)[0])
 
     def is_login_exist(self, login: str) -> bool:
         sql = f'''

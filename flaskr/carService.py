@@ -30,8 +30,15 @@ class AbstractCarService(ABC):
     def get_firm_filter(self) -> list[dto.FilterItem]:
         pass
 
+    @abstractmethod
+    def get_car_by_test_drive(self, test_drive_id) -> dto.Car:
+        pass
+
 
 class CarService(AbstractCarService):
+    def get_car_by_test_drive(self, test_drive_id) -> dto.Car:
+        return self._provider.get_car_by_test_drive(test_drive_id)
+
     def get_equipment_filter(self) -> list[dto.FilterItem]:
         return self._provider.get_filter_values(CarService.__EQUIPMENT)
 

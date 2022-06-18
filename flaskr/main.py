@@ -267,4 +267,26 @@ def get_dealer_centers():
     }
 
 
+@app.route('/api/cars/test-drive/<int:test_drive_id>')
+@login_required
+def get_car_by_test_drive(test_drive_id: int):
+    """
+    ::return JSON: {
+            'id': 1,
+            'produce_year': 2000,
+            'equipment': "",
+            'engine': "",
+            'car_type': "",
+            'firm': "",
+            'model': "",
+            'horse_powers': 1,
+            'battery_capacity': 0.0 // or null if not set
+            'engine_volume': 0.0 //or null if not set
+        }
+    """
+
+    cs = CarService()
+    return cs.get_car_by_test_drive(test_drive_id).to_dict()
+
+
 app.run()
