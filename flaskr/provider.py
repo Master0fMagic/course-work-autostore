@@ -67,7 +67,14 @@ class AbstractTestDriveProvider(ABC):
         pass
 
 
-class SqliteDataProvider(AbstractClientProvider, AbstractCarProvider, AbstractTestDriveProvider):
+class AbstractDealerCenterProvider(ABC):
+    @abstractmethod
+    def get_centers(self):
+        pass
+
+
+class SqliteDataProvider(AbstractClientProvider, AbstractCarProvider, AbstractTestDriveProvider,
+                         AbstractDealerCenterProvider):
     _provider = None
 
     def __init__(self):
@@ -156,3 +163,10 @@ where t.clientid = {client_id}'''
         sql = f'''SELECT * from {filter_name}'''
 
         return [converter.DbResponseToFilterConverter().convert(data=item) for item in self._db.execute_select(sql)]
+
+    def get_centers(self):
+        sql = '''SELECT *
+from dillercenter'''
+
+        return [converter.DbResponseToDealerCenterConverter().convert(data=item) for item in
+                self._db.execute_select(sql)]

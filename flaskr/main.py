@@ -5,9 +5,9 @@ from setup import init_app
 from clientService import ClientService
 from carService import CarService
 from testDriveService import TestDriveService
+from dealerService import DealerService
 from flask_login import login_user, logout_user, login_required, current_user
 import error
-import dto
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*", "supports_credentials": "true"}})
@@ -242,6 +242,24 @@ def get_test_drives():
     tds = TestDriveService()
     return {
         "history": [item.to_dict() for item in tds.get_test_drives_by_client(current_user.id)]
+    }
+
+
+@app.route('/api/test-drive/dealer-centers')
+@login_required
+def get_dealer_centers():
+    """
+    :return: JSON: {
+    "data":[
+        {
+
+        }
+    ]
+    }
+    """
+    ds = DealerService()
+    return {
+        'data': [item.to_dict() for item in ds.get_dealer_centers()]
     }
 
 

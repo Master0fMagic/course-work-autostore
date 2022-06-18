@@ -130,15 +130,27 @@ class FilterItem:
         }
 
 
-class Filter:
-    def __init__(self):
-        self._items = dict()
+class DealerCenter:
+    def __init__(self, center_id=0, name='', address=''):
+        self._id = center_id
+        self._name = name
+        self._address = address
 
     @property
-    def items(self) -> dict:
-        return self._items
+    def id(self) -> int:
+        return self._id
 
-    def add_item(self, filter_name: str, items: list[FilterItem]) -> None:
-        self._items[filter_name] = [item.to_dict() for item in items]
+    @property
+    def name(self) -> str:
+        return self._name
 
+    @property
+    def address(self) -> str:
+        return self._address
 
+    def to_dict(self) -> dict:
+        return {
+            'id': self._id,
+            'name': self._name,
+            'address': self.address
+        }

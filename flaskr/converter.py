@@ -61,3 +61,14 @@ class DbResponseToFilterConverter(AbstractConverter):
         return dto.FilterItem(*kwargs['data'])
 
 
+class DbResponseToDealerCenterConverter(AbstractConverter):
+    def convert(self, **kwargs):
+        """
+        kwargs:
+            data: list|set|tuple with db result
+        """
+
+        if 'data' not in kwargs:
+            raise KeyError('"data" is not present in kwargs')
+
+        return dto.DealerCenter(*kwargs['data'])

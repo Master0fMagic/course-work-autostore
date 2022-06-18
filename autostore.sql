@@ -18,6 +18,12 @@ create table firm(
 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 name TEXT NOT NULL);
 
+create table dillercenter(
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+name TEXT NOT NULL,
+address TEXT NOT NULL
+)
+
 
 create table client(
 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -47,13 +53,23 @@ FOREIGN KEY(firmid) REFERENCES firm(id)
 );
 
 
+create table dillercentercar(
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+carid INTEGER NOT NULL,
+dillercenterid NOT NULL
+)
+
+
 create table testdrives(
 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 autoid INTEGER NOT NULL,
+dillercenterid INTEGER NOT NULL,
 testdrivedate  UNSIGNED BIG INT NOT NULL,
 clientid INTEGER NOT NULL,
+status BOOLEAN DEFAULT FALSE,
 FOREIGN KEY(autoid) REFERENCES auto(id),
-FOREIGN KEY(clientid) REFERENCES client(id)
+FOREIGN KEY(clientid) REFERENCES client(id),
+FOREIGN KEY(dillercenterid) REFERENCES dillercenter(id)
 );
 
 
@@ -99,6 +115,25 @@ INSERT INTO auto(produceyear,equipmentid, enginetypeid, gearboxtypeid, cartypeid
 (2020, 4, 2, 2, 3, 5, 'C4', 1.2, 125, null ),
 (2020, 2, 3, 2, 5, 4, 'Tundra TRD Pro', 5.7, 675, null ),
 (2020, 2, 2, 1, 5, 4, 'Tundra TRD Pro', 5.3, 601, null );
+
+
+INSERT INTO dillercenter(name, address) VALUES
+("Toyota Center", "м.Харків, вул.Сумська, 90"),
+("Elite cars showroom", "м.Київ, вул.Хрещатик, 17"),
+("Every day cars", "м.Харків, пр.Героїв Харкова, 327"),
+("Citroen center", "м.Львів, вул.Героїв України, 25");
+
+INSERT INTO dillercentercar(carid, dillercenterid) VALUES
+(1, 2),
+(1, 2),
+(3, 3),
+(4, 3),
+(4, 4),
+(5, 1), 
+(5, 3),
+(6, 1);
+
+
 
 
 
