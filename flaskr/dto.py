@@ -91,9 +91,11 @@ class Car:
 
 
 class TestDrive:
-    def __init__(self, car='', time=0):
+    def __init__(self, car='', time=0, dealer_center='', status=False):
         self._car = car
         self._date = time
+        self._dealer_center = dealer_center
+        self._status = status
 
     @property
     def car(self) -> str:
@@ -103,10 +105,20 @@ class TestDrive:
     def time(self) -> int:
         return self._date
 
+    @property
+    def dealer_center(self) -> str:
+        return self._dealer_center
+
+    @property
+    def status(self) -> bool:
+        return self._status
+
     def to_dict(self) -> dict:
         return {
             'car': self._car,
-            'date': self._date
+            'date': self._date,
+            'dealer_center': self._dealer_center,
+            'status': self._status
         }
 
 

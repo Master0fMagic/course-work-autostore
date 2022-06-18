@@ -10,5 +10,6 @@ class UserAlreadyExist(BaseException):
     description = 'user with such login already exist'
 
 
-class CarIsBookedOrUserIsBusyException(BaseException):
-    description = 'car is already booked for test drive or user has planned test drive for chosen date'
+class BookTestDriveIsImpossible(BaseException):
+    description = 'car is already booked for test drive in chosen dealer center or user has planned test drive for ' \
+                  'chosen date '

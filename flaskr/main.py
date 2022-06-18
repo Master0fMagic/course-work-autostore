@@ -206,20 +206,22 @@ def create_test_drive():
     """
     takes json: {
     "car_id": <int: auto`s id to test drive>,
-    "date": <int: test drive date in format od unix time (seconds)>
+    "date": <int: test drive date in format od unix time (seconds)>,
+    "dealer_center_id": <int: id of dealer center>
     }
     :return: 200 or 40X error
     """
     auto_id = request.json.get('car_id')
     date = request.json.get('date')
+    dealer_center = request.json.get('dealer_center_id')
 
-    if not (auto_id and date):
+    if not (auto_id and date and dealer_center):
         abort(400, 'Not correct value')
 
     tds = TestDriveService()
     try:
-        tds.create_test_drive(auto_id, date, current_user.id)
-    except error.CarIsBookedOrUserIsBusyException as e:
+        tds.create_test_drive(auto_id, date, current_user.id, dealer_center)
+    except error.BookTestDriveIsImpossible as e:
         abort(400, e.description)
 
     return jsonify(success=True)
@@ -252,7 +254,9 @@ def get_dealer_centers():
     :return: JSON: {
     "data":[
         {
-
+            "address": "м.Київ, вул.Хрещатик, 17",
+            "id": 2,
+            "name": "Elite cars showroom"
         }
     ]
     }

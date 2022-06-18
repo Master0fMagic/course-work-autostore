@@ -55,11 +55,11 @@ class AbstractCarProvider(ABC):
 
 class AbstractTestDriveProvider(ABC):
     @abstractmethod
-    def create_test_drive(self, car_id: int, date: int, client_id: int):
+    def create_test_drive(self, car_id: int, date: int, client_id: int, dealer_center_id: int):
         pass
 
     @abstractmethod
-    def check_car(self, car_id: int, date: int, client_id: int) -> bool:
+    def check_possibility(self, car_id: int, date: int, client_id: int, dealer_center_id: int) -> bool:
         pass
 
     @abstractmethod
@@ -134,24 +134,28 @@ join firm f on f.id = a.firmid
         res = self._db.execute_select(sql)
         return [converter.DbResponseToCarConverter().convert(data=row) for row in res]
 
-    def check_car(self, car_id: int, date: int, client_id: int) -> bool:
+    def check_possibility(self, car_id: int, date: int, client_id: int, dealer_center_id: int) -> bool:
         sql = f'''SELECT EXISTS (
 select id  
 from testdrives t 
-where (t.autoid = {car_id} or t.clientid = {client_id})
+where ( (t.autoid = {car_id} and t.dillercenterid = {dealer_center_id} ) or t.clientid = {client_id})
 and t.testdrivedate = {date})
+and EXISTS(
+SELECT id from dillercentercar d where d.dillercenterid = :did and d.carid = :carid
+)
         '''
         res = self._db.execute_select(sql)
         return bool(int(res[0][0]))
 
-    def create_test_drive(self, car_id: int, date: int, client_id: int):
-        sql = f'''INSERT INTO testdrives(autoid, testdrivedate, clientid) VALUES
-({car_id}, {date}, {client_id});'''
+    def create_test_drive(self, car_id: int, date: int, client_id: int, dealer_center_id: int):
+        sql = f'''INSERT INTO testdrives(autoid, testdrivedate, clientid, dillercenterid) VALUES
+({car_id}, {date}, {client_id}, {dealer_center_id});'''
 
         self._db.execute_update(sql)
 
     def get_test_drives_by_client(self, client_id: int) -> list[dto.TestDrive]:
-        sql = f'''SELECT a.produceyear || ' ' || f.name || ' ' || a.model, t.testdrivedate 
+        sql = f'''SELECT a.produceyear || ' ' || f.name || ' ' || a.model, t.testdrivedate, d.name || ', ' || d.address,
+t.status
 from testdrives t 
 join auto a ON a.id = t.autoid 
 join firm f ON f.id = a.firmid 
