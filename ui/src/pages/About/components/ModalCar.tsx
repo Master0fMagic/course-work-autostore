@@ -36,7 +36,7 @@ const ModalCar = ({car, open, setModal}) => {
                 width: 800
             }}>
                 <h2 id="parent-modal-title">Опис авто #{car.id}</h2>
-                <img src={"https://car.ua/wp-content/themes/car-ua/img/main-page/lexus.png"} width={"50%"}/>
+                <img src={car.image} width={"50%"}/>
                 <TableContainer component={Paper}>
                     <Table sx={{maxHeight:"500px", overflowY:"auto"}}>
                         <TableBody>

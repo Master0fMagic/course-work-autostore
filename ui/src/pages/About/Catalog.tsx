@@ -249,7 +249,7 @@ const Catalog = () => {
                                 <Box id={c.id} className={cl.car__card}>
                                     <Box className={cl.content}>
                                         <img width={"50%"}
-                                             src={"https://car.ua/wp-content/themes/car-ua/img/main-page/lexus.png"}/>
+                                             src={c.image}/>
                                         <Typography className={cl.car__firm}>{c.firm}</Typography>
                                         <Typography className={cl.car__model}>{c.model}</Typography>
 
