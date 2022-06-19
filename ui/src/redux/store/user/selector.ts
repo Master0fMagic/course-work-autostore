@@ -11,6 +11,11 @@ export const SelectUser = createSelector(
     (user) => user.account,
 );
 
+export const SelectUserError = createSelector(
+    [selectDomain],
+    (user) => user.errorMsg,
+);
+
 export const SelectUserAuth = createSelector(
     [selectDomain],
     (user) => user.isAuth,
