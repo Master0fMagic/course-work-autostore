@@ -104,7 +104,7 @@ class SqliteDataProvider(AbstractClientProvider, AbstractCarProvider, AbstractTe
 
     def get_car_by_test_drive(self, test_drive_id) -> dto.Car:
         sql = f'''SELECT a.id, a.produceyear, e.name, e2.name, g.name, a.enginevolume, c.name, f.name, a.model, 
-        a.horsepower, a.baterycapacity 
+        a.horsepower, a.baterycapacity, a.image
 FROM auto a 
 join equipment e on e.id  = a.equipmentid 
 join enginetype e2 on e2.id = a.enginetypeid 
@@ -162,7 +162,7 @@ where c.login = '{login}' or c.id = '{login}';
         return self.get_client(login)
 
     def get_all_cars(self) -> list[dto.Car]:
-        sql = '''SELECT a.id, a.produceyear, e.name, e2.name, g.name, a.enginevolume, c.name, f.name, a.model, a.horsepower, a.baterycapacity 
+        sql = '''SELECT a.id, a.produceyear, e.name, e2.name, g.name, a.enginevolume, c.name, f.name, a.model, a.horsepower, a.baterycapacity, a.image
 FROM auto a 
 join equipment e on e.id  = a.equipmentid 
 join enginetype e2 on e2.id = a.enginetypeid 

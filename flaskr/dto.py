@@ -22,7 +22,7 @@ class Client(UserMixin):
 
 class Car:
     def __init__(self, car_id=-1, year=-1, equipment='', engine='', gearbox='', engine_volume=None,
-                 car_type='', firm='', model='', horse_powers=-1, battery=None):
+                 car_type='', firm='', model='', horse_powers=-1, battery=None, image=''):
         self._id = car_id
         self._year = year
         self._equipment = equipment
@@ -34,6 +34,7 @@ class Car:
         self._model = model
         self._horse_powers = horse_powers
         self._battery = battery
+        self._image = image
 
     @property
     def id(self) -> int:
@@ -86,7 +87,8 @@ class Car:
             'model': self._model,
             'horse_powers': self._horse_powers,
             'engine_volume': self._engine_volume,
-            'battery_capacity': self._battery
+            'battery_capacity': self._battery,
+            'image': self._image
         }
 
 

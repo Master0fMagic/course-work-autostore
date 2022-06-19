@@ -99,7 +99,8 @@ def get_cars():
             'model': "",
             'horse_powers': 1,
             'battery_capacity': 0.0 // or null if not set
-            'engine_volume': 0.0 //or null if not set
+            'engine_volume': 0.0 //or null if not set,
+            'image':""
         }
         ]
     }
@@ -284,7 +285,8 @@ def get_car_by_test_drive(test_drive_id: int):
             'model': "",
             'horse_powers': 1,
             'battery_capacity': 0.0 // or null if not set
-            'engine_volume': 0.0 //or null if not set
+            'engine_volume': 0.0 //or null if not set,
+            'image':""
         }
     """
 
