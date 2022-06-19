@@ -25,7 +25,7 @@ export type GetCars = {
     horse_powers: number,
     battery_capacity: number | null,
     engine_volume: number | null
-
+    image: string | null
 }
 
 export type GetOrder = {
