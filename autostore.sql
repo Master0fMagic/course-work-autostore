@@ -126,7 +126,7 @@ INSERT INTO dillercenter(name, address) VALUES
 
 INSERT INTO dillercentercar(carid, dillercenterid) VALUES
 (1, 2),
-(1, 2),
+(2, 2),
 (3, 3),
 (4, 3),
 (4, 4),
