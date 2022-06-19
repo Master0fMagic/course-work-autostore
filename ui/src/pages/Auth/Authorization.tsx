@@ -1,17 +1,20 @@
-import React, {useState} from 'react';
-import {Box, Button, TextField, Typography} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Alert, AlertProps, Box, Button, Grid, IconButton, TextField, Typography} from "@mui/material";
 
 import cl from './Authorization.module.css';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {login} from "../../redux/store/user/slice";
 import {PATH} from "../../routes";
 import {useNavigate} from "react-router";
+import CloseIcon from "@mui/icons-material/Close";
+import {SelectUserError} from "../../redux/store/user/selector";
 
 const Authorization = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const err = useSelector(SelectUserError);
+    const [messageHandler, setMessageHandler] = useState({type: "" as AlertProps["severity"], message: ""});
     const [loginU, setLogin] = useState("");
     const [password, setPassword] = useState("");
 
@@ -23,12 +26,33 @@ const Authorization = () => {
         setPassword(e.target.value);
     }
 
+    useEffect(()=>{
+        setMessageHandler({type: "error", message: err})
+    }, [err])
+
     const authorize = () => {
         dispatch(login({login: loginU, password: password}));
     }
 
     return (
         <Box className={cl.container}>
+            <Grid sx={{marginBottom: "30px"}} item xs={12}>
+                {messageHandler.message.length > 0 && <Alert
+                    action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                setMessageHandler({...messageHandler, message: ""})
+                            }}
+                        >
+                            <CloseIcon fontSize="inherit"/>
+                        </IconButton>
+                    }
+                    severity={messageHandler.type}>{messageHandler.message}
+                </Alert>}
+            </Grid>
             <Box className={cl.window}>
                 <Box className={cl.content}>
                     <Typography className={cl.text}>Вхід</Typography>

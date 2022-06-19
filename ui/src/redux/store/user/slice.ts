@@ -33,6 +33,7 @@ const userSlice = createSlice({
         login(state, action:PayloadAction<PostLogin>) {
             state.account = {} as User;
             state.isAuth = false;
+            state.errorMsg = "";
         },
         setAuth: (state, action) => {
             state.isAuth = action.payload;
@@ -43,8 +44,11 @@ const userSlice = createSlice({
         logout: (state) => {
             console.log("logout")
         },
+        setError: (state, action:PayloadAction<string>) => {
+            state.errorMsg = action.payload;
+        },
     }
 })
 
 export default userSlice.reducer;
-export const { setUser, setAuth, login, logout } = userSlice.actions;
+export const { setUser, setAuth, login, logout, setError } = userSlice.actions;

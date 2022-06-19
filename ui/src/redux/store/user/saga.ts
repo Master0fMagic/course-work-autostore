@@ -1,7 +1,7 @@
 import {call, put, takeLatest, select, takeEvery} from 'redux-saga/effects';
 import {AnyAction} from "redux";
 import {PayloadAction} from "@reduxjs/toolkit";
-import {login, logout, setAuth, setUser, Statuses} from "./slice";
+import {login, logout, setAuth, setError, setUser, Statuses} from "./slice";
 import {PostLogin, Register} from "../../../api/Api";
 
 import {Api} from "../../../api/Api";
@@ -20,6 +20,7 @@ function* loginAction({payload}: PayloadAction<PostLogin>) {
         yield put(setUser(payload));
         yield put(setAuth(true))
     } catch (err) {
+        yield put(setError(err.message));
         console.log(err.message)
     }
 }

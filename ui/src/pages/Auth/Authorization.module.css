@@ -6,6 +6,7 @@
     background: url("../../assets/navy-blue-coupe-sedan-driving-highway-accross-mountains.jpg") center;
     background-size: cover;
 
+    flex-direction: column;
     display: flex;
     align-items: center;
     justify-content: center;
