@@ -59,12 +59,12 @@ const SecondStep = ({carId, filial, setFilial}) => {
         <Box>
             <CircularProgress sx={{display: !loading && "none"}}/>
             <FormControl sx={{display: loading && "none", margin:"40px 0px"}} fullWidth>
-                <InputLabel id="demo-simple-select-label">Виробник</InputLabel>
+                <InputLabel id="demo-simple-select-label">Філіал</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={filial}
-                    label="Виробник"
+                    label="Філіал"
                     onChange={e=>setFilial(e.target.value)}
                 >
                     {filials.map((f, i) => (
@@ -147,6 +147,9 @@ const ModalTestDrive = ({carId, open, setModal}) => {
             setLoading(false);
             setAllComplited(true);
             setCompleted({[0]:true, [1]:true});
+            setTimeout(()=>{
+                setModal(false);
+            }, 1000);
         }).catch(err => {
             console.log(err)
             setLoading(false)

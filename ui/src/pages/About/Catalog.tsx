@@ -111,8 +111,11 @@ const Catalog = () => {
         <Box>
             {loading ? <CircularProgress/> :
                 <Box display={"flex"} marginTop={"10px"} justifyContent={"space-between"}>
-                    {currentCar !== -1 && <ModalCar car={cars.filter(x=>x.id === currentCar)[0]} open={modal} setModal={setModal}></ModalCar>}
-                    {currentCar !== -1 && <ModalTestDrive carId={cars.filter(x=>x.id === currentCar)[0].id} open={modalTest} setModal={setModalTest}></ModalTestDrive>}
+                    {currentCar !== -1 && <ModalCar car={cars.filter(x => x.id === currentCar)[0]} open={modal}
+                                                    setModal={setModal}></ModalCar>}
+                    {currentCar !== -1 &&
+                        <ModalTestDrive carId={cars.filter(x => x.id === currentCar)[0].id} open={modalTest}
+                                        setModal={setModalTest}></ModalTestDrive>}
                     <Box width={"25%"} sx={{background: "rgba(238,238,238,0.46)", padding: "2%"}}>
                         <Typography fontSize={"20px"} sx={{marginBottom: "20px"}}>
                             Сортувати за фільтрами
@@ -180,72 +183,87 @@ const Catalog = () => {
                                 ))}
                             </Select>
                         </FormControl>
-                        <Slider
-                            sx={{marginBottom: "40px"}}
-                            getAriaLabel={() => 'Рік випуску'}
-                            valueLabelDisplay={"auto"}
-                            value={yearRange}
-                            onChange={(e, n) => setYearRange(n as number[])}
-                            min={2000}
-                            max={2022}
-                            disableSwap
-                            marks={[
-                                {
-                                    value: 2000,
-                                    label: "2000"
-                                },
-                                {
-                                    value: 2022,
-                                    label: "2022"
-                                },
-                            ]}
-                        />
-                        <Slider
-                            sx={{marginBottom: "40px"}}
-                            getAriaLabel={() => "Об'єм двигуна"}
-                            valueLabelDisplay={"auto"}
-                            value={engineRange}
-                            onChange={(e, n) => setEngineRange(n as number[])}
-                            min={1.0}
-                            max={6.0}
-                            step={0.1}
-                            disableSwap
-                            marks={[
-                                {
-                                    value: 1,
-                                    label: "1.0"
-                                },
-                                {
-                                    value: 6,
-                                    label: "6.0"
-                                },
-                            ]}
-                        />
-                        <Slider
-                            sx={{marginBottom: "40px"}}
-                            getAriaLabel={() => 'Потужність двигуна'}
-                            valueLabelDisplay={"auto"}
-                            value={enginePRange}
-                            onChange={(e, n) => setEnginePRange(n as number[])}
-                            min={100}
-                            max={1000}
-                            step={10}
-                            disableSwap
-                            marks={[
-                                {
-                                    value: 100,
-                                    label: "100"
-                                },
-                                {
-                                    value: 1000,
-                                    label: "1000"
-                                },
-                            ]}
-                        />
+                        <Box>
+                            <Typography id="input-slider" gutterBottom>
+                                Рік випуску
+                            </Typography>
+                            <Slider
+                                sx={{marginBottom: "40px"}}
+                                getAriaLabel={() => 'Рік випуску'}
+                                valueLabelDisplay={"auto"}
+                                value={yearRange}
+                                onChange={(e, n) => setYearRange(n as number[])}
+                                min={2000}
+                                max={2022}
+                                disableSwap
+                                marks={[
+                                    {
+                                        value: 2000,
+                                        label: "2000"
+                                    },
+                                    {
+                                        value: 2022,
+                                        label: "2022"
+                                    },
+                                ]}
+                            />
+                        </Box>
+                        <Box>
+                            <Typography id="input-slider" gutterBottom>
+                                Ємність двигнуна
+                            </Typography>
+                            <Slider
+                                sx={{marginBottom: "40px"}}
+                                getAriaLabel={() => "Об'єм двигуна"}
+                                valueLabelDisplay={"auto"}
+                                value={engineRange}
+                                onChange={(e, n) => setEngineRange(n as number[])}
+                                min={1.0}
+                                max={6.0}
+                                step={0.1}
+                                disableSwap
+                                marks={[
+                                    {
+                                        value: 1,
+                                        label: "1.0"
+                                    },
+                                    {
+                                        value: 6,
+                                        label: "6.0"
+                                    },
+                                ]}
+                            />
+                        </Box>
+                        <Box>
+                            <Typography id="input-slider" gutterBottom>
+                                Кінські сили
+                            </Typography>
+                            <Slider
+                                sx={{marginBottom: "40px"}}
+                                getAriaLabel={() => 'Потужність двигуна'}
+                                valueLabelDisplay={"auto"}
+                                value={enginePRange}
+                                onChange={(e, n) => setEnginePRange(n as number[])}
+                                min={100}
+                                max={1000}
+                                step={10}
+                                disableSwap
+                                marks={[
+                                    {
+                                        value: 100,
+                                        label: "100"
+                                    },
+                                    {
+                                        value: 1000,
+                                        label: "1000"
+                                    },
+                                ]}
+                            />
+                        </Box>
                     </Box>
                     <Box width={"70%"}>
                         <Box display={"flex"} flexWrap={"wrap"}>
-                            {filterCars().length > 0 ? filterCars().map(c=>(
+                            {filterCars().length > 0 ? filterCars().map(c => (
                                 <Box id={c.id} className={cl.car__card}>
                                     <Box className={cl.content}>
                                         <img width={"50%"}
@@ -254,18 +272,21 @@ const Catalog = () => {
                                         <Typography className={cl.car__model}>{c.model}</Typography>
 
                                         <Tooltip title={"Детальніше"}>
-                                            <IconButton onClick={e=>handleChangeSelectedCar(e,c.id)} color={"primary"} className={cl.desc}>
+                                            <IconButton onClick={e => handleChangeSelectedCar(e, c.id)}
+                                                        color={"primary"} className={cl.desc}>
                                                 <InfoIcon/>
                                             </IconButton>
                                         </Tooltip>
                                         <Tooltip title={"Замовити тестдрайв"}>
-                                            <IconButton onClick={e=>handleChangeSelectedTestdrive(e,c.id)} color={"primary"} className={cl.testdrive}>
+                                            <IconButton onClick={e => handleChangeSelectedTestdrive(e, c.id)}
+                                                        color={"primary"} className={cl.testdrive}>
                                                 <DriveEtaIcon/>
                                             </IconButton>
                                         </Tooltip>
                                     </Box>
                                 </Box>
-                            )) : <Typography fontSize={"32px"} width={"100%"} align={"center"}>Нічого не знайдено!</Typography>}
+                            )) : <Typography fontSize={"32px"} width={"100%"} align={"center"}>Нічого не
+                                знайдено!</Typography>}
                         </Box>
                     </Box>
                 </Box>
