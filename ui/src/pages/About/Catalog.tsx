@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Box,
+    Box, Card, CardActions, CardContent, CardHeader, CardMedia,
     CircularProgress,
     FormControl,
     IconButton,
@@ -264,27 +264,32 @@ const Catalog = () => {
                     <Box width={"70%"}>
                         <Box display={"flex"} flexWrap={"wrap"}>
                             {filterCars().length > 0 ? filterCars().map(c => (
-                                <Box id={c.id} className={cl.car__card}>
-                                    <Box className={cl.content}>
-                                        <img width={"50%"}
-                                             src={c.image}/>
-                                        <Typography className={cl.car__firm}>{c.firm}</Typography>
-                                        <Typography className={cl.car__model}>{c.model}</Typography>
-
+                                <Card sx={{width: "25%", margin: "1%"}}>
+                                    <CardHeader
+                                        title={c.firm}
+                                        subheader={c.model}
+                                    />
+                                    <CardMedia
+                                        component="img"
+                                        height="150"
+                                        image={c.image}
+                                        alt="Paella dish"
+                                    />
+                                    <CardActions disableSpacing sx={{justifyContent: "flex-end"}}>
                                         <Tooltip title={"Детальніше"}>
                                             <IconButton onClick={e => handleChangeSelectedCar(e, c.id)}
-                                                        color={"primary"} className={cl.desc}>
+                                                        color={"primary"}>
                                                 <InfoIcon/>
                                             </IconButton>
                                         </Tooltip>
                                         <Tooltip title={"Замовити тестдрайв"}>
                                             <IconButton onClick={e => handleChangeSelectedTestdrive(e, c.id)}
-                                                        color={"primary"} className={cl.testdrive}>
+                                                        color={"primary"}>
                                                 <DriveEtaIcon/>
                                             </IconButton>
                                         </Tooltip>
-                                    </Box>
-                                </Box>
+                                    </CardActions>
+                                </Card>
                             )) : <Typography fontSize={"32px"} width={"100%"} align={"center"}>Нічого не
                                 знайдено!</Typography>}
                         </Box>
