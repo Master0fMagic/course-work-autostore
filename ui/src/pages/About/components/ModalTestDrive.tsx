@@ -219,7 +219,7 @@ const ModalTestDrive = ({carId, open, setModal}) => {
                                         sx={{mr: 1}}>
                                     Далі
                                 </Button>
-                                <Button variant={"contained"} disabled={activeStep !== totalSteps() - 1 || !selectedFilial || loading || allComplited}
+                                <Button variant={"contained"} disabled={activeStep !== totalSteps() - 1 || selectedFilial === -1 || loading || allComplited}
                                         onClick={createTestDrive}>
                                     {loading && <CircularProgress style={{height:"30px", width:"30px", marginRight:"10px"}}/>}
                                     Замовити
